@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return "Bot LIVE - News Sniper is running!"
+    return "Bot LIVE - News Sniper running!"
 
 @app.route('/health')
 def health():
@@ -22,11 +22,15 @@ def health():
 def test():
     if bot and CHAT_ID:
         try:
-            bot.send_message(CHAT_ID, "✅ TEST SUCCESS - Bot is LIVE!")
-            return "Message sent to Telegram!"
+            bot.send_message(CHAT_ID, "✅ TEST SUCCESS - Bot LIVE!")
+            return "Message sent!"
         except Exception as e:
             return f"Error: {e}"
-    return "BOT_TOKEN or CHAT_ID missing in Render!"
+    return "BOT_TOKEN or CHAT_ID missing!"
+
+def run_flask():
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
 
 def run_bot():
     if not bot:
@@ -34,14 +38,13 @@ def run_bot():
         return
     while True:
         try:
-            print("Bot polling started...")
+            print("Bot polling...")
             bot.infinity_polling(timeout=60, long_polling_timeout=60)
         except Exception as e:
-            print(f"Bot error: {e} - restarting in 5 sec")
+            print(f"Bot error: {e}")
             time.sleep(5)
 
 if __name__ == "__main__":
-    # Flask ko alag thread me
-    threading.Thread(target=lambda: app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 10000))), debug=False, use_reloader=False), daemon=True).start()
-    # Bot ko main me
+    t = threading.Thread(target=run_flask, daemon=True)
+    t.start()
     run_bot()
