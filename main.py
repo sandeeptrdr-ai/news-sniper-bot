@@ -10,28 +10,28 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return "âœ… ALL NEWS Bot LIVE - Har news pe alert! | Go to /test for testing"
+    return "ALL NEWS Bot LIVE - Har news pe alert! Go to /test"
 
 @app.route('/test')
 def test_alert():
     try:
         url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-        msg = "ðŸ§ª *TEST ALERT SUCCESS!*\n\nðŸ’° USD - Test News (7 PM wali ka demo)\nðŸ“Š Actual: 5.5%\nðŸ“ˆ Forecast: 5.0%\nðŸ“‰ Previous: 4.8%\n\nâœ… Bot 100% Working hai! 7 PM wali news pe aise hi alert ayega!\nðŸš€ 24/7 LIVE"
-        requests.get(url, params={"chat_id": CHAT_ID, "text": msg, "parse_mode": "Markdown"}, timeout=10)
-        return "âœ… Test alert sent to Telegram! Check your bot now!"
+        msg = "TEST ALERT SUCCESS!\n\nUSD - Test News (7 PM demo)\nActual: 5.5%\nForecast: 5.0%\nPrevious: 4.8%\n\nBot 100% Working! 7 PM news pe alert ayega!"
+        requests.get(url, params={"chat_id": CHAT_ID, "text": msg}, timeout=10)
+        return "Test alert sent to Telegram! Check now!"
     except Exception as e:
         return f"Error: {e}"
 
 def send_telegram(msg):
     try:
         url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-        requests.get(url, params={"chat_id": CHAT_ID, "text": msg, "parse_mode": "Markdown"}, timeout=10)
-        print(f"Sent: {msg[:100]}")
+        requests.get(url, params={"chat_id": CHAT_ID, "text": msg}, timeout=10)
+        print(f"Sent: {msg[:80]}")
     except Exception as e:
         print(f"Telegram error: {e}")
 
 def scrape():
-    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+    headers = {"User-Agent": "Mozilla/5.0"}
     events = []
     try:
         r = requests.get("https://www.forexfactory.com/calendar", headers=headers, timeout=20)
@@ -44,13 +44,13 @@ def scrape():
                 actual_el = row.select_one(".calendar__actual")
                 forecast_el = row.select_one(".calendar__forecast")
                 previous_el = row.select_one(".calendar__previous")
-                currency_text = currency.text.strip() if currency else ""
-                event_text = event_el.text.strip() if event_el else ""
-                actual_text = actual_el.text.strip() if actual_el else ""
-                forecast_text = forecast_el.text.strip() if forecast_el else ""
-                previous_text = previous_el.text.strip() if previous_el else ""
-                if event_text and actual_text:
-                    events.append({"currency": currency_text, "event": event_text, "actual": actual_text, "forecast": forecast_text, "previous": previous_text})
+                ct = currency.text.strip() if currency else ""
+                et = event_el.text.strip() if event_el else ""
+                at = actual_el.text.strip() if actual_el else ""
+                ft = forecast_el.text.strip() if forecast_el else ""
+                pt = previous_el.text.strip() if previous_el else ""
+                if et and at:
+                    events.append({"currency": ct, "event": et, "actual": at, "forecast": ft, "previous": pt})
             except:
                 continue
     except Exception as e:
@@ -60,7 +60,7 @@ def scrape():
 alerted = set()
 
 def bot_loop():
-    send_telegram("âœ… *ALL NEWS Bot Started!*\n\nAb HAR NEWS pe alert ayega - Red/Orange/Yellow/Silver\nChahe gap 0% ho ya 100%\n\nTest ke liye /test kholo\n24/7 LIVE on Render")
+    send_telegram("ALL NEWS Bot Started! Har news pe alert ayega - Red/Orange/Yellow/Silver. Test: /test kholo. 24/7 LIVE")
     while True:
         try:
             events = scrape()
@@ -70,7 +70,7 @@ def bot_loop():
                 if key in alerted:
                     continue
                 alerted.add(key)
-                msg = f"ðŸš¨ *NEWS AA GAYI!*\n\nðŸ’° {ev['currency']} - {ev['event']}\n\nðŸ“Š *Actual:* {ev['actual']}\nðŸ“ˆ Forecast: {ev['forecast'] or 'N/A'}\nðŸ“‰ Previous: {ev['previous'] or 'N/A'}\n\nâš¡ _Har news pe alert_"
+                msg = f"NEWS AA GAYI!\n\n{ev['currency']} - {ev['event']}\nActual: {ev['actual']}\nForecast: {ev['forecast'] or 'N/A'}\nPrevious: {ev['previous'] or 'N/A'}"
                 send_telegram(msg)
             if len(alerted) > 500:
                 alerted.clear()
