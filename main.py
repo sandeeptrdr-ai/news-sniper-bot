@@ -1,44 +1,105 @@
-<!DOCTYPE html><html lang="en" class="optimisticai_d4925249-module__WZtcjq__variable optimisticmono_9b82a078-module__hMSRWa__variable light"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/immutable/chunks/0_n83orcwyk4s.css" data-precedence="next"/><link rel="stylesheet" href="/_next/static/immutable/chunks/1bu7odp3ip0pm.css" data-precedence="next"/><link rel="stylesheet" href="/_next/static/immutable/chunks/42e7h9g2vn8e3.css" data-precedence="next"/><link rel="stylesheet" href="/_next/static/immutable/chunks/287l5xq35imjj.css" data-precedence="next"/><link rel="stylesheet" href="/_next/static/immutable/chunks/17oghy4n4g9qf.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/immutable/chunks/36baba7il59p9.js"/><script src="/_next/static/immutable/chunks/15ugf01ehtgl7.js" async=""></script><script src="/_next/static/immutable/chunks/2nqiqj-lrk2yk.js" async=""></script><script src="/_next/static/immutable/chunks/turbopack-3o0kjv0zeyoa4.js" async=""></script><script src="/_next/static/immutable/chunks/1dq47j4p-xg3o.js" async=""></script><script src="/_next/static/immutable/chunks/2t-jlsga_9q2d.js" async=""></script><meta name="next-size-adjust" content=""/><script>(function(){try{var d=document.documentElement,m=window.matchMedia("(prefers-color-scheme: dark)");function a(){var c=d.classList;if(m.matches){c.remove("light");c.add("dark");}else{c.remove("dark");c.add("light");}}a();m.addEventListener("change",a);}catch(e){}})()</script><meta name="sentry-trace" content="fb5b537a73e140628048d613b3bee089-b53bc091da5a4754-0"/><meta name="baggage" content="sentry-environment=production,sentry-release=d664bedbdbf6f67583ae529d6adb7ff0b0e21e94,sentry-public_key=217336c598020d63d1a44137ff8fdb71,sentry-trace_id=fb5b537a73e140628048d613b3bee089,sentry-org_id=4509963614355457,sentry-sampled=false,sentry-sample_rand=0.2407872013957929,sentry-sample_rate=0.1"/><script src="/_next/static/immutable/chunks/0cz1d0mv5g_q7.js" noModule=""></script></head><body><div hidden=""><!--$--><!--/$--></div><div class="min-h-dvh px-6 pt-8 pb-8 font-mono text-[14px] leading-[1.6]"><pre class="mx-auto flex max-w-[1000px] items-start bg-transparent"><div class="text-text-tertiary border-fill-divider me-4 min-w-[40px] shrink-0 border-e pe-4 text-end select-none" aria-hidden="true"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div><div>24</div><div>25</div><div>26</div><div>27</div><div>28</div><div>29</div><div>30</div><div>31</div><div>32</div><div>33</div><div>34</div><div>35</div><div>36</div><div>37</div><div>38</div><div>39</div><div>40</div><div>41</div><div>42</div><div>43</div><div>44</div><div>45</div><div>46</div><div>47</div><div>48</div><div>49</div><div>50</div><div>51</div><div>52</div><div>53</div><div>54</div><div>55</div><div>56</div><div>57</div><div>58</div><div>59</div><div>60</div><div>61</div><div>62</div><div>63</div><div>64</div><div>65</div><div>66</div><div>67</div><div>68</div><div>69</div><div>70</div><div>71</div><div>72</div><div>73</div><div>74</div><div>75</div><div>76</div><div>77</div><div>78</div><div>79</div><div>80</div><div>81</div><div>82</div><div>83</div><div>84</div><div>85</div><div>86</div><div>87</div><div>88</div><div>89</div><div>90</div><div>91</div><div>92</div><div>93</div><div>94</div><div>95</div><div>96</div><div>97</div><div>98</div><div>99</div><div>100</div><div>101</div><div>102</div><div>103</div><div>104</div><div>105</div><div>106</div></div><code class="block min-w-0 flex-1 overflow-x-auto whitespace-pre"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> os, time, re, requests</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> bs4 </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> BeautifulSoup</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> threading </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> Thread</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> flask </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> Flask</span></span>
-<span class="line"></span>
-<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">BOT_TOKEN</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> os.getenv(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">"TELEGRAM_BOT_TOKEN"</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">)</span></span>
-<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">CHAT_ID</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> os.getenv(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">"TELEGRAM_CHAT_ID"</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">, </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">"7393523550"</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">)</span></span>
-<span class="line"></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">app </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> Flask(</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">__name__</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">)</span></span>
-<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">@app.route</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">'/'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">)</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">def</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0"> home</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">():</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">    return</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> "✅ ALL NEWS Bot LIVE - Har news pe alert!"</span></span>
-<span class="line"></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">def</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0"> send_telegram</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">(msg):</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">    try</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">:</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">        url </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">=</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> f</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">"https://api.telegram.org/bot</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">{BOT_TOKEN}</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">/sendMessage"</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">        requests.get(url, </span><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70">params</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">{</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">"chat_id"</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">CHAT_ID</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">, </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">"text"</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">: msg, </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">"parse_mode"</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">"Markdown"</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">}, </span><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70">timeout</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">=</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">10</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">)</span></span>
-<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">        print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">(</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">f</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">"Sent: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">{</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">msg[:</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">100</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">]</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">}</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">"</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">)</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">    except</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF"> Exception</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> as</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> e:</span></span>
-<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">        print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">(</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">f</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">"Telegram error: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">{</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">e</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">}</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">"</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">)</span></span>
-<span class="line"></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">def</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0"> scrape</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">():</span></span>
-<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D">    # Try to get calendar - ForexFactory now uses heavy JS, so we try both forexfactory and investing fallback</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">    headers </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> {</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">"User-Agent"</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">}</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">    events </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> []</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">    try</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">:</span></span>
-<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D">        # Method 1: ForexFactory</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">        r </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> requests.get(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">"https://www.forexfactory.com/calendar"</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">, </span><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70">headers</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">headers, </span><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70">timeout</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">=</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">20</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">)</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">        soup </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> BeautifulSoup(r.text, </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">'html.parser'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">)</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">        rows </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> soup.select(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">"tr.calendar__row"</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">)</span></span>
-<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">        print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">(</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">f</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">"FF Rows found: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">{len</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">(rows)</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">}</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">"</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">)</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">        for</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> row </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">in</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> rows:</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">            try</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">:</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">                currency </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> row.select_one(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">".calendar__currency"</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">)</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">                event_el </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> row.select_one(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">".calendar__event"</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">)</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">                actual_el </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> row.select_one(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">".calendar__actual"</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">)</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">                forecast_el </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> row.select_one(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">".calendar__forecast"</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">)</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">                previous_el </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> row.select_one(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">".calendar__previous"</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">)</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">                impact_el </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> row.select_one(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">".calendar__impact span"</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">)</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">                time_el </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> row.select_one(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">".calendar__time"</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">)</span></span>
-<span class="line"></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">                currency_text </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> currency.text.strip() </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">if</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> currency </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">else</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> ""</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">                event_text </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> event_el.text.strip() </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">if</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> event_el </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">else</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> ""</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">                actual_text </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> actual_el.text.strip() </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">if</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> actual_el </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">else</span><span style="--shiki-light:#032
+import os, time, re, requests
+from bs4 import BeautifulSoup
+from threading import Thread
+from flask import Flask
+
+BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "7393523550")
+
+app = Flask(__name__)
+@app.route('/')
+def home():
+    return "âœ… ALL NEWS Bot LIVE - Har news pe alert!"
+
+def send_telegram(msg):
+    try:
+        url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+        requests.get(url, params={"chat_id": CHAT_ID, "text": msg, "parse_mode": "Markdown"}, timeout=10)
+        print(f"Sent: {msg[:100]}")
+    except Exception as e:
+        print(f"Telegram error: {e}")
+
+def scrape():
+    # Try to get calendar - ForexFactory now uses heavy JS, so we try both forexfactory and investing fallback
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+    events = []
+    try:
+        # Method 1: ForexFactory
+        r = requests.get("https://www.forexfactory.com/calendar", headers=headers, timeout=20)
+        soup = BeautifulSoup(r.text, 'html.parser')
+        rows = soup.select("tr.calendar__row")
+        print(f"FF Rows found: {len(rows)}")
+        for row in rows:
+            try:
+                currency = row.select_one(".calendar__currency")
+                event_el = row.select_one(".calendar__event")
+                actual_el = row.select_one(".calendar__actual")
+                forecast_el = row.select_one(".calendar__forecast")
+                previous_el = row.select_one(".calendar__previous")
+                impact_el = row.select_one(".calendar__impact span")
+                time_el = row.select_one(".calendar__time")
+
+                currency_text = currency.text.strip() if currency else ""
+                event_text = event_el.text.strip() if event_el else ""
+                actual_text = actual_el.text.strip() if actual_el else ""
+                forecast_text = forecast_el.text.strip() if forecast_el else ""
+                previous_text = previous_el.text.strip() if previous_el else ""
+                time_text = time_el.text.strip() if time_el else ""
+                
+                impact = "yellow"
+                if impact_el:
+                    cls = " ".join(impact_el.get("class", []))
+                    if "high" in cls or "red" in cls.lower(): impact = "ðŸ”´ RED"
+                    elif "medium" in cls or "orange" in cls.lower(): impact = "ðŸŸ  ORANGE"
+                    elif "low" in cls or "yellow" in cls.lower(): impact = "ðŸŸ¡ YELLOW"
+                    else: impact = cls
+                else:
+                    # try to find icon color from title
+                    imp_title = row.get("data-impact", "")
+                    if "High" in str(row): impact = "ðŸ”´ RED"
+                    elif "Medium" in str(row): impact = "ðŸŸ  ORANGE"
+                    elif "Low" in str(row): impact = "ðŸŸ¡ YELLOW"
+
+                if event_text and actual_text: # Only if actual came
+                    events.append({
+                        "time": time_text,
+                        "currency": currency_text,
+                        "event": event_text,
+                        "actual": actual_text,
+                        "forecast": forecast_text,
+                        "previous": previous_text,
+                        "impact": impact
+                    })
+            except Exception as e:
+                continue
+    except Exception as e:
+        print(f"Scrape error: {e}")
+    return events
+
+alerted = set()
+
+def bot_loop():
+    send_telegram("âœ… *ALL NEWS Bot Started!*\n\nAb *HAR NEWS* pe alert ayega - Red/Orange/Yellow/Silver\nChahe gap 0% ho ya 100%\n\n7 PM wali news ke liye Ready! ðŸš€\n24/7 LIVE on Render")
+    while True:
+        try:
+            events = scrape()
+            print(f"Found {len(events)} events with Actual")
+            for ev in events:
+                key = f"{ev['currency']}-{ev['event']}-{ev['actual']}"
+                if key in alerted:
+                    continue
+                alerted.add(key)
+                
+                msg = f"ðŸš¨ *NEWS AA GAYI!*\n\nâ° Time: {ev['time']}\nðŸ’° {ev['currency']} - {ev['event']}\n{ev['impact']}\n\nðŸ“Š *Actual:* {ev['actual']}\nðŸ“ˆ Forecast: {ev['forecast'] or 'N/A'}\nðŸ“‰ Previous: {ev['previous'] or 'N/A'}\n\nâš¡ _Har news pe alert - No gap filter_"
+                send_telegram(msg)
+            
+            if len(alerted) > 500:
+                alerted.clear()
+        except Exception as e:
+            print(f"Loop error: {e}")
+        time.sleep(30) # Check every 30 seconds for fast alert
+
+if __name__ == "__main__":
+    Thread(target=bot_loop, daemon=True).start()
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
