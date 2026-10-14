@@ -1,11 +1,11 @@
 from flask import Flask
-import os, telebot, threading, time, requests, json
+import os, telebot, threading, time, requests
 from datetime import datetime
 import pytz
 
 app = Flask(__name__)
 
-# === TERI FINAL IDS ===
+# === TERI IDS ===
 BOT_TOKEN = "-8849871999:AAGpyVcLESkyao9XiaJjdZqOGGU4fMVCC_s"
 CHAT_ID = "7393523550"
 
@@ -14,47 +14,47 @@ CHAT = os.getenv("TELEGRAM_CHAT_ID") or CHAT_ID
 bot = telebot.TeleBot(TOKEN)
 
 IST = pytz.timezone('Asia/Kolkata')
-sent_today = set()  # Ek news ek hi baar bheje
+sent_today = set()
 
 def send(msg):
     try:
         bot.send_message(CHAT, msg, parse_mode='HTML')
-        print(f"Sent: {msg[:50]}")
+        print(f"Sent: {msg[:60]}")
     except Exception as e:
         print(f"Error: {e}")
 
-def fetch_forex_news():
+def fetch_all_forex_news():
     try:
-        # ForexFactory ka official JSON
         url = "https://nfs.faireconomy.media/ff_calendar_thisweek.json"
         headers = {"User-Agent": "Mozilla/5.0"}
-        r = requests.get(url, headers=headers, timeout=10)
+        r = requests.get(url, headers=headers, timeout=15)
         data = r.json()
         
         now_ist = datetime.now(IST)
-        current_date_str = now_ist.strftime("%Y-%m-%d")
         
         for event in data:
-            # Sirf USD + HIGH impact (Red folder)
-            if event.get('country') != 'USD':
-                continue
-            if event.get('impact') != 'High':  # Red news only
-                continue
-            
-            # Date check - aaj ki news
-            event_time_str = event.get('date') # format: 2024-... check karo
-            # ForexFactory date UTC me hota hai, hum IST se match karenge
-            
-            title = event.get('title', 'USD News')
+            title = event.get('title', 'News')
+            country = event.get('country', 'ALL')
+            impact = event.get('impact', 'Low')
             actual = event.get('actual', '')
             forecast = event.get('forecast', '')
             previous = event.get('previous', '')
             
-            # Agar Actual aaya hai aur aaj tak nahi bheja
-            key = f"{title}-{event.get('date')}"
+            # Key - ek news ek hi baar
+            key = f"{country}-{title}-{event.get('date')}"
+            
+            # Sirf tab bhejo jab Actual aaya ho aur pehle na bheja ho
             if actual and key not in sent_today:
-                # 7 PM ke aas paas ho to bhejo (ya koi bhi High USD news)
-                msg = f"""🚨 <b>USD HIGH IMPACT NEWS!</b>
+                
+                # Emoji impact ke hisab se
+                if impact == 'High':
+                    emoji = '🔴'
+                elif impact == 'Medium':
+                    emoji = '🟠'
+                else:
+                    emoji = '🟡'
+                
+                msg = f"""{emoji} <b>{country} FOREX NEWS!</b>
 
 <b>{title}</b>
 Actual: <b>{actual}</b>
@@ -62,29 +62,29 @@ Forecast: {forecast}
 Previous: {previous}
 
 Time: {now_ist.strftime('%I:%M %p IST')}
-Impact: 🔴 HIGH
+Country: {country}
+Impact: {emoji} {impact}
 
-Sandeep — Market move hone wala hai!"""
+Sandeep — Market alert!"""
+                
                 send(msg)
                 sent_today.add(key)
-                time.sleep(2)
+                time.sleep(1)  # 1 sec gap taaki spam na lage
                 
     except Exception as e:
-        print(f"News fetch error: {e}")
+        print(f"News error: {e}")
 
 def news_loop():
-    print("News Loop Started - Checking every 60 sec...")
+    print("OPTION 3 LOOP Started - All Currency All News - Checking every 45 sec...")
     while True:
-        fetch_forex_news()
-        # Har 60 sec check karega
-        time.sleep(60)
+        fetch_all_forex_news()
+        time.sleep(45)  # Har 45 sec check
 
-# Background me news check start
 threading.Thread(target=news_loop, daemon=True).start()
 
 @app.route('/')
 def home():
-    return "News Sniper LIVE - Forex RED News Active! 🔴"
+    return "News Sniper LIVE - ALL Currency ALL News Active! 🌍"
 
 @app.route('/health')
 def health():
@@ -92,33 +92,32 @@ def health():
 
 @app.route('/test')
 def test():
-    send(f"""✅ <b>FINAL CONFIRMED!</b>
+    send(f"""✅ <b>OPTION 3 ACTIVE!</b>
 
-Bot UP hai!
-Token: {TOKEN[:12]}...
-Chat ID: {CHAT}
+Ab tujhe FOREX ki SABHI currency ki SABHI news ayegi!
 
-Ab ready hai 7 PM USD RED news ke liye!
-Har 60 sec me ForexFactory check kar raha hai!
+USD, EUR, GBP, JPY, AUD, CAD, NZD, CHF
+🔴 HIGH + 🟠 MEDIUM + 🟡 LOW
 
-100% Working! 🚀""")
-    return f"✅ Test bhej diya! Chat: {CHAT}"
+Har 45 sec check ho raha hai!
+100% Working!""")
+    return "Option 3 Test Sent!"
 
 @app.route('/testnews')
 def testnews():
-    # 7 PM wala demo news
-    send("""🚨 <b>USD HIGH IMPACT NEWS! (DEMO)</b>
+    send("""🟡 <b>EUR FOREX NEWS! (DEMO - OPTION 3)</b>
 
-<b>CPI m/m</b>
-Actual: <b>0.4%</b>
-Forecast: 0.3%
-Previous: 0.2%
+<b>German CPI m/m</b>
+Actual: <b>0.3%</b>
+Forecast: 0.2%
+Previous: 0.1%
 
-Time: 07:00 PM IST
-Impact: 🔴 HIGH
+Time: 11:27 AM IST
+Country: EUR
+Impact: 🟡 Low
 
-Ye 7 PM pe asli news aise hi ayegi!""")
-    return "Demo news sent!"
+Ab aise hi USD, EUR, GBP sab ki news ayegi!""")
+    return "Option 3 Demo Sent!"
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
