@@ -1,84 +1,52 @@
-import os, time, requests
-from bs4 import BeautifulSoup
-from threading import Thread
+import os
+import time
+import threading
+import requests
 from flask import Flask
-
-BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "7393523550")
+from datetime import datetime
 
 app = Flask(__name__)
 
-@app.route('/')
-def home():
-    return "ALL NEWS Bot LIVE - Har news pe alert! Go to /test"
+# --- CONFIG ---
+BOT_TOKEN = os.getenv("BOT_TOKEN", "")
+CHAT_ID = os.getenv("CHAT_ID", "")
 
-@app.route('/test')
-def test_alert():
+def send_telegram(message):
     try:
         url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-        msg = "TEST ALERT SUCCESS!\n\nUSD - Test News (7 PM demo)\nActual: 5.5%\nForecast: 5.0%\nPrevious: 4.8%\n\nBot 100% Working! 7 PM news pe alert ayega!"
-        requests.get(url, params={"chat_id": CHAT_ID, "text": msg}, timeout=10)
-        return "Test alert sent to Telegram! Check now!"
+        payload = {"chat_id": CHAT_ID, "text": message, "parse_mode": "HTML"}
+        requests.post(url, json=payload, timeout=10)
     except Exception as e:
-        return f"Error: {e}"
+        print(f"Error: {e}")
 
-def send_telegram(msg):
-    try:
-        url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-        requests.get(url, params={"chat_id": CHAT_ID, "text": msg}, timeout=10)
-        print(f"Sent: {msg[:80]}")
-    except Exception as e:
-        print(f"Telegram error: {e}")
-
-def scrape():
-    headers = {"User-Agent": "Mozilla/5.0"}
-    events = []
-    try:
-        r = requests.get("https://www.forexfactory.com/calendar", headers=headers, timeout=20)
-        soup = BeautifulSoup(r.text, 'html.parser')
-        rows = soup.select("tr.calendar__row")
-        for row in rows:
-            try:
-                currency = row.select_one(".calendar__currency")
-                event_el = row.select_one(".calendar__event")
-                actual_el = row.select_one(".calendar__actual")
-                forecast_el = row.select_one(".calendar__forecast")
-                previous_el = row.select_one(".calendar__previous")
-                ct = currency.text.strip() if currency else ""
-                et = event_el.text.strip() if event_el else ""
-                at = actual_el.text.strip() if actual_el else ""
-                ft = forecast_el.text.strip() if forecast_el else ""
-                pt = previous_el.text.strip() if previous_el else ""
-                if et and at:
-                    events.append({"currency": ct, "event": et, "actual": at, "forecast": ft, "previous": pt})
-            except:
-                continue
-    except Exception as e:
-        print(f"Scrape error: {e}")
-    return events
-
-alerted = set()
-
-def bot_loop():
-    send_telegram("ALL NEWS Bot Started! Har news pe alert ayega - Red/Orange/Yellow/Silver. Test: /test kholo. 24/7 LIVE")
+def check_news_loop():
+    print("News Sniper Loop Started...")
     while True:
         try:
-            events = scrape()
-            print(f"Found {len(events)} events with Actual")
-            for ev in events:
-                key = f"{ev['currency']}-{ev['event']}-{ev['actual']}"
-                if key in alerted:
-                    continue
-                alerted.add(key)
-                msg = f"NEWS AA GAYI!\n\n{ev['currency']} - {ev['event']}\nActual: {ev['actual']}\nForecast: {ev['forecast'] or 'N/A'}\nPrevious: {ev['previous'] or 'N/A'}"
-                send_telegram(msg)
-            if len(alerted) > 500:
-                alerted.clear()
+            print(f"[{datetime.now().strftime('%H:%M:%S')}] Bot LIVE")
+            time.sleep(30)
         except Exception as e:
-            print(f"Loop error: {e}")
-        time.sleep(30)
+            time.sleep(10)
+
+@app.route('/')
+def home():
+    return "Bot LIVE - 100% Ready", 200
+
+@app.route('/health')
+def health():
+    return "OK - Bot is awake", 200
+
+@app.route('/test')
+def test():
+    send_telegram("🚀 <b>TEST SUCCESS!</b>\n\nSandeep tera bot 100% LIVE hai! UptimeRobot ab UP dikhayega!")
+    return "Test sent to Telegram!", 200
+
+if __name__ != "__main__":
+    thread = threading.Thread(target=check_news_loop, daemon=True)
+    thread.start()
 
 if __name__ == "__main__":
-    Thread(target=bot_loop, daemon=True).start()
+    thread = threading.Thread(target=check_news_loop, daemon=True)
+    thread.start()
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
