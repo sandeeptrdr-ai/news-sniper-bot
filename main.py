@@ -1,30 +1,40 @@
 from flask import Flask
 import os
-
-# TERE ID YAHAN ADD HAIN
-BOT_TOKEN_DIRECT = "-8849871999:AAE5hWMAytjXDW2ksZCWwyiw2Oab-bmg-Q0"
-CHAT_ID_DIRECT = "7393523550"
+import telebot
 
 app = Flask(__name__)
 
+# TERA TOKEN + CHAT ID YAHAN ADD HAI
+BOT_TOKEN_DIRECT = "-8849871999:AAGpyVcLESkyao9XiaJjdZqOGGU4fMVCC_s"
+CHAT_ID_DIRECT = "7393523550"
+
+# Pehle Environment se lega, nahi mila to direct wala lega
+BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN") or os.getenv("BOT_TOKEN") or BOT_TOKEN_DIRECT
+CHAT_ID = os.getenv("TELEGRAM_CHAT_ID") or os.getenv("CHAT_ID") or CHAT_ID_DIRECT
+
+bot = telebot.TeleBot(BOT_TOKEN) if BOT_TOKEN else None
+
+def send_telegram(msg):
+    try:
+        if bot and CHAT_ID:
+            bot.send_message(CHAT_ID, msg)
+            print(f"Sent to {CHAT_ID}")
+    except Exception as e:
+        print(f"Error: {e}")
+
 @app.route('/')
 def home():
-    return "Bot LIVE - News Sniper UP!"
+    return "News Sniper LIVE - Token Added!"
 
 @app.route('/health')
 def health():
-    return "OK - Bot is awake", 200
+    return "OK", 200
 
 @app.route('/test')
 def test():
     try:
-        import telebot
-        token = os.getenv("TELEGRAM_BOT_TOKEN") or os.getenv("BOT_TOKEN") or BOT_TOKEN_DIRECT
-        chat = os.getenv("TELEGRAM_CHAT_ID") or os.getenv("CHAT_ID") or CHAT_ID_DIRECT
-        
-        bot = telebot.TeleBot(token)
-        bot.send_message(chat, "✅ Sandeep FINAL TEST - Bot UP hai! Ye message code se aaya hai!")
-        return f"✅ Telegram pe bhej diya! Chat: {chat}"
+        send_telegram("✅ Sandeep FINAL TEST - Bot UP hai!\n\nToken + Chat ID add ho gaya hai!\nChat ID: 7393523550\nAb 7 PM news pe alert ayega!\n100% Working!")
+        return f"✅ Telegram pe bhej diya! Chat: {CHAT_ID}"
     except Exception as e:
         return f"Error: {e}"
 
