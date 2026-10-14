@@ -1,36 +1,18 @@
 import os
-import time
-import threading
-import requests
 from flask import Flask
-from datetime import datetime
+import threading
+import telebot
+import time
 
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
+
+bot = telebot.TeleBot(BOT_TOKEN) if BOT_TOKEN else None
 app = Flask(__name__)
-
-# --- CONFIG ---
-BOT_TOKEN = os.getenv("BOT_TOKEN", "")
-CHAT_ID = os.getenv("CHAT_ID", "")
-
-def send_telegram(message):
-    try:
-        url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-        payload = {"chat_id": CHAT_ID, "text": message, "parse_mode": "HTML"}
-        requests.post(url, json=payload, timeout=10)
-    except Exception as e:
-        print(f"Error: {e}")
-
-def check_news_loop():
-    print("News Sniper Loop Started...")
-    while True:
-        try:
-            print(f"[{datetime.now().strftime('%H:%M:%S')}] Bot LIVE")
-            time.sleep(30)
-        except Exception as e:
-            time.sleep(10)
 
 @app.route('/')
 def home():
-    return "Bot LIVE - 100% Ready", 200
+    return "Bot LIVE - News Sniper is running!"
 
 @app.route('/health')
 def health():
@@ -38,15 +20,28 @@ def health():
 
 @app.route('/test')
 def test():
-    send_telegram("🚀 <b>TEST SUCCESS!</b>\n\nSandeep tera bot 100% LIVE hai! UptimeRobot ab UP dikhayega!")
-    return "Test sent to Telegram!", 200
+    if bot and CHAT_ID:
+        try:
+            bot.send_message(CHAT_ID, "✅ TEST SUCCESS - Bot is LIVE!")
+            return "Message sent to Telegram!"
+        except Exception as e:
+            return f"Error: {e}"
+    return "BOT_TOKEN or CHAT_ID missing in Render!"
 
-if __name__ != "__main__":
-    thread = threading.Thread(target=check_news_loop, daemon=True)
-    thread.start()
+def run_bot():
+    if not bot:
+        print("BOT_TOKEN missing!")
+        return
+    while True:
+        try:
+            print("Bot polling started...")
+            bot.infinity_polling(timeout=60, long_polling_timeout=60)
+        except Exception as e:
+            print(f"Bot error: {e} - restarting in 5 sec")
+            time.sleep(5)
 
 if __name__ == "__main__":
-    thread = threading.Thread(target=check_news_loop, daemon=True)
-    thread.start()
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+    # Flask ko alag thread me
+    threading.Thread(target=lambda: app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 10000))), debug=False, use_reloader=False), daemon=True).start()
+    # Bot ko main me
+    run_bot()
